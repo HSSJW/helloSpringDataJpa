@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+package kr.ac.hansung.cse.hellospringdatajpa.config;
+<head th:insert="~{common :: commonHead}">
+    <title>사용자 관리</title>
+</head>
+
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/products}">Product Manager</a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-3">
+                    관리자: <span sec:authentication="name"></span>님
+                </span>
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">로그아웃</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-3">
+            <!-- 관리자 사이드바 -->
+            <div class="list-group">
+                <a th:href="@{/admin/dashboard}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-speedometer2"></i> 대시보드
+                </a>
+                <a th:href="@{/admin/users}" class="list-group-item list-group-item-action active">
+                    <i class="bi bi-people"></i> 사용자 관리
+                </a>
+                <a th:href="@{/products}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-box"></i> 상품 관리
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <h2>전체 사용자 목록</h2>
+
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>이름</th>
+                                <th>이메일</th>
+                                <th>권한</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="user : ${users}">
+                                <td th:text="${user.id}">1</td>
+                                <td th:text="${user.name}">사용자명</td>
+                                <td th:text="${user.email}">email@example.com</td>
+                                <td>
+                                    <span th:each="role, iterStat : ${user.roles}">
+                                        <span th:if="${role.roleName == 'ROLE_ADMIN'}" class="badge bg-danger">관리자</span>
+                                        <span th:if="${role.roleName == 'ROLE_USER'}" class="badge bg-primary">사용자</span>
+                                        <span th:if="${!iterStat.last}">, </span>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div th:if="${#lists.isEmpty(users)}" class="text-center text-muted">
+                        등록된 사용자가 없습니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:insert="~{common :: commonScript}"></div>
+</body>
+</html>
+
+import kr.ac.hansung.cse.hellospringdatajpa.entity.Role;
+import kr.ac.hansung.cse.hellospringdatajpa.entity.User;
+import kr.ac.hansung.cse.hellospringdatajpa.repo.RoleRepository;
+import kr.ac.hansung.cse.hellospringdatajpa.repo.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+
+@Component
+public class DataInitializer implements CommandLineRunner {
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public void run(String... args) throws Exception {
+        // 역할 초기화
+        if (roleRepository.count() == 0) {
+            Role userRole = new Role("ROLE_USER");
+            Role adminRole = new Role("ROLE_ADMIN");
+
+            roleRepository.save(userRole);
+            roleRepository.save(adminRole);
+        }
+
+        // 관리자 계정 초기화 (존재하지 않을 경우만)
+        if (!userRepository.existsByEmail("admin@hansung.ac.kr")) {
+            User admin = new User();
+            admin.setName("관리자");
+            admin.setEmail("admin@hansung.ac.kr");
+            admin.setPassword(passwordEncoder.encode("admin123"));
+
+            Role adminRole = roleRepository.findByRoleName("ROLE_ADMIN")
+                    .orElseThrow(() -> new RuntimeException("ROLE_ADMIN not found"));
+            Role userRole = roleRepository.findByRoleName("ROLE_USER")
+                    .orElseThrow(() -> new RuntimeException("ROLE_USER not found"));
+
+            admin.setRoles(Arrays.asList(adminRole, userRole));
+            userRepository.save(admin);
+        }
+
+        // 일반 사용자 계정 초기화 (존재하지 않을 경우만)
+        if (!userRepository.existsByEmail("user@hansung.ac.kr")) {
+            User user = new User();
+            user.setName("일반사용자");
+            user.setEmail("user@hansung.ac.kr");
+            user.setPassword(passwordEncoder.encode("user123"));
+
+            Role userRole = roleRepository.findByRoleName("ROLE_USER")
+                    .orElseThrow(() -> new RuntimeException("ROLE_USER not found"));
+
+            user.setRoles(Arrays.asList(userRole));
+            userRepository.save(user);
+        }
+    }
+}

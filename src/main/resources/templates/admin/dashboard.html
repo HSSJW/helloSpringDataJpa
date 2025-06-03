@@ -1,0 +1,74 @@
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card text-white bg-success mb-3">
+                        <div class="card-header">
+                            <i class="bi bi-shield-check"></i> 시스템 상태
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">정상</h4>
+                            <p class="card-text">시스템이 정상적으로 작동 중입니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 빠른 액션 -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>빠른 작업</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a th:href="@{/products/new}" class="btn btn-outline-primary btn-lg w-100 mb-2">
+                                <i class="bi bi-plus-circle"></i><br>
+                                새 상품 등록
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a th:href="@{/admin/users}" class="btn btn-outline-info btn-lg w-100 mb-2">
+                                <i class="bi bi-people"></i><br>
+                                사용자 관리
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a th:href="@{/products}" class="btn btn-outline-success btn-lg w-100 mb-2">
+                                <i class="bi bi-box"></i><br>
+                                상품 목록
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 최근 활동 -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>시스템 정보</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Spring Boot 버전
+                            <span class="badge bg-primary rounded-pill">3.4.4</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Spring Security
+                            <span class="badge bg-success rounded-pill">활성화</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            JPA/Hibernate
+                            <span class="badge bg-info rounded-pill">활성화</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:insert="~{common :: commonScript}"></div>
+</body>
+</html>
+
