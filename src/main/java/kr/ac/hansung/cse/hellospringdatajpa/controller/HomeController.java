@@ -21,11 +21,10 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        // 비인증 사용자도 접근 가능하도록 단순화
         return "redirect:/login";
     }
 
-    // 로그인 페이지
+    // 로그인
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout,
@@ -46,13 +45,13 @@ public class HomeController {
         return "auth/signup";
     }
 
-    // 회원가입 처리
+    // 회원가입
     @PostMapping("/signup")
     public String registerUser(@Valid @ModelAttribute("user") User user,
                                BindingResult result,
                                Model model) {
 
-        // 유효성 검사 실패
+        // 회원가입 유효성검사 실패 시
         if (result.hasErrors()) {
             return "auth/signup";
         }

@@ -31,7 +31,7 @@ public class ProductController {
         Product product = new Product();
         model.addAttribute("product", product);
 
-        return "new_product";
+        return "products/new_product";
     }
 
     @GetMapping("/edit/{id}")
@@ -40,12 +40,10 @@ public class ProductController {
         Product product = service.get(id);
         model.addAttribute("product", product);
 
-        return "edit_product";
+        return "products/edit_product";
     }
 
-    // @ModelAttribute는  Form data (예: name=Laptop&brand=Samsung&madeIn=Korea&price=1000.00)를 Product 객체
-    // @RequestBody는 HTTP 요청 본문에 포함된
-    //  JSON 데이터(예: {"name": "Laptop", "brand": "Samsung", "madeIn": "Korea", "price": 1000.00})를 Product 객체에 매핑
+
     @PostMapping("/save")
     public String saveProduct(@ModelAttribute("product") Product product) {
 
