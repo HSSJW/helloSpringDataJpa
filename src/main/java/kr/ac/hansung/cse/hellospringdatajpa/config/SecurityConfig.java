@@ -65,7 +65,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .userDetailsService(customUserDetailsService)
-                .csrf(csrf -> csrf.disable()); // 개발 편의를 위해 CSRF 비활성화
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }

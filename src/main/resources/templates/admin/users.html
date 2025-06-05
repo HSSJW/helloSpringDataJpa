@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
-package kr.ac.hansung.cse.hellospringdatajpa.config;
 <head th:insert="~{common :: commonHead}">
     <title>사용자 관리</title>
 </head>
@@ -45,26 +44,26 @@ package kr.ac.hansung.cse.hellospringdatajpa.config;
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>이름</th>
-                                <th>이메일</th>
-                                <th>권한</th>
-                            </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>이름</th>
+                            <th>이메일</th>
+                            <th>권한</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="user : ${users}">
-                                <td th:text="${user.id}">1</td>
-                                <td th:text="${user.name}">사용자명</td>
-                                <td th:text="${user.email}">email@example.com</td>
-                                <td>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.id}">1</td>
+                            <td th:text="${user.name}">사용자명</td>
+                            <td th:text="${user.email}">email@example.com</td>
+                            <td>
                                     <span th:each="role, iterStat : ${user.roles}">
                                         <span th:if="${role.roleName == 'ROLE_ADMIN'}" class="badge bg-danger">관리자</span>
                                         <span th:if="${role.roleName == 'ROLE_USER'}" class="badge bg-primary">사용자</span>
                                         <span th:if="${!iterStat.last}">, </span>
                                     </span>
-                                </td>
-                            </tr>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
 

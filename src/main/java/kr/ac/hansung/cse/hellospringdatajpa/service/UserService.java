@@ -29,7 +29,7 @@ public class UserService {
         // 비밀번호 암호화
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // 기본 역할 설정 (ROLE_USER)
+        // 회원 가입시 기본 (ROLE_USER)
         Role userRole = roleRepository.findByRoleName("ROLE_USER")
                 .orElseThrow(() -> new RuntimeException("ROLE_USER를 찾을 수 없습니다"));
         user.setRoles(Arrays.asList(userRole));

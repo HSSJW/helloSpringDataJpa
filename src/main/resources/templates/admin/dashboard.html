@@ -1,67 +1,75 @@
-                </div>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{common :: commonHead}">
+    <title>사용자 관리</title>
+</head>
 
-                <div class="col-md-6">
-                    <div class="card text-white bg-success mb-3">
-                        <div class="card-header">
-                            <i class="bi bi-shield-check"></i> 시스템 상태
-                        </div>
-                        <div class="card-body">
-                            <h4 class="card-title">정상</h4>
-                            <p class="card-text">시스템이 정상적으로 작동 중입니다.</p>
-                        </div>
-                    </div>
-                </div>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/products}">Product Manager</a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-3">
+                    관리자: <span sec:authentication="name"></span>님
+                </span>
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">로그아웃</button>
+                </form>
             </div>
+        </div>
+    </nav>
 
-            <!-- 빠른 액션 -->
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h5>빠른 작업</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <a th:href="@{/products/new}" class="btn btn-outline-primary btn-lg w-100 mb-2">
-                                <i class="bi bi-plus-circle"></i><br>
-                                새 상품 등록
-                            </a>
-                        </div>
-                        <div class="col-md-4">
-                            <a th:href="@{/admin/users}" class="btn btn-outline-info btn-lg w-100 mb-2">
-                                <i class="bi bi-people"></i><br>
-                                사용자 관리
-                            </a>
-                        </div>
-                        <div class="col-md-4">
-                            <a th:href="@{/products}" class="btn btn-outline-success btn-lg w-100 mb-2">
-                                <i class="bi bi-box"></i><br>
-                                상품 목록
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <div class="row">
+        <div class="col-md-3">
+            <!-- 관리자 사이드바 -->
+            <div class="list-group">
+                <a th:href="@{/admin/dashboard}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-speedometer2"></i> 대시보드
+                </a>
+                <a th:href="@{/admin/users}" class="list-group-item list-group-item-action active">
+                    <i class="bi bi-people"></i> 사용자 관리
+                </a>
+                <a th:href="@{/products}" class="list-group-item list-group-item-action">
+                    <i class="bi bi-box"></i> 상품 관리
+                </a>
             </div>
+        </div>
 
-            <!-- 최근 활동 -->
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h5>시스템 정보</h5>
-                </div>
+        <div class="col-md-9">
+            <h2>전체 사용자 목록</h2>
+
+            <div class="card">
                 <div class="card-body">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Spring Boot 버전
-                            <span class="badge bg-primary rounded-pill">3.4.4</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Spring Security
-                            <span class="badge bg-success rounded-pill">활성화</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            JPA/Hibernate
-                            <span class="badge bg-info rounded-pill">활성화</span>
-                        </li>
-                    </ul>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>이름</th>
+                            <th>이메일</th>
+                            <th>권한</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.id}">1</td>
+                            <td th:text="${user.name}">사용자명</td>
+                            <td th:text="${user.email}">email@example.com</td>
+                            <td>
+                                    <span th:each="role, iterStat : ${user.roles}">
+                                        <span th:if="${role.roleName == 'ROLE_ADMIN'}" class="badge bg-danger">관리자</span>
+                                        <span th:if="${role.roleName == 'ROLE_USER'}" class="badge bg-primary">사용자</span>
+                                        <span th:if="${!iterStat.last}">, </span>
+                                    </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div th:if="${#lists.isEmpty(users)}" class="text-center text-muted">
+                        등록된 사용자가 없습니다.
+                    </div>
                 </div>
             </div>
         </div>
@@ -71,4 +79,3 @@
 <div th:insert="~{common :: commonScript}"></div>
 </body>
 </html>
-
