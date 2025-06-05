@@ -38,7 +38,7 @@ public class SecurityConfig {
                         // Actuator 엔드포인트 허용
                         .requestMatchers("/actuator/**").permitAll()
                         // 테스트 경로, 홈페이지, 회원가입, 로그인 페이지는 인증 없이 접근 허용
-                        .requestMatchers("/", "/signup", "/login", "/error", "/test", "/test-html").permitAll()
+                        .requestMatchers("/", "/signup", "/login", "/error").permitAll()
                         // 상품 목록 조회는 인증된 사용자만
                         .requestMatchers("/products", "/products/").hasAnyRole("USER", "ADMIN")
                         // 상품 등록, 수정, 삭제는 ADMIN만
