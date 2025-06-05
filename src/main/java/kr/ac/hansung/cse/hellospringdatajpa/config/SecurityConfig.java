@@ -35,6 +35,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         // 정적 리소스는 인증 없이 접근 허용
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/bootstrap/**").permitAll()
+                        // Actuator 엔드포인트 허용
+                        .requestMatchers("/actuator/**").permitAll()
                         // 테스트 경로, 홈페이지, 회원가입, 로그인 페이지는 인증 없이 접근 허용
                         .requestMatchers("/", "/signup", "/login", "/error", "/test", "/test-html").permitAll()
                         // 상품 목록 조회는 인증된 사용자만
