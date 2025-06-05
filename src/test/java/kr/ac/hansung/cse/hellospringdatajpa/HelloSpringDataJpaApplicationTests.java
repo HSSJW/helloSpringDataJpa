@@ -62,7 +62,14 @@ class HelloSpringDataJpaApplicationTests {
     @DisplayName("Test3: createProduct")
     public void createProduct() {
 
-        Product product = new Product("OLED TV", "LG전자", "korea", 300.0);
+//        Product product = new Product("OLED TV", "LG전자", "korea", 300.0);
+        Product product = new Product();
+        product.setName("OLED TV");
+        product.setBrand("LG전자");
+        product.setMadeIn("korea");
+        product.setPrice(300.0);
+
+
         Product savedProduct = productRepository.save(product);
 
         Optional<Product> newProduct = productRepository.findById(savedProduct.getId());

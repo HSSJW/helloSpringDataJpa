@@ -27,20 +27,4 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    // Setter 메서드들
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
 }

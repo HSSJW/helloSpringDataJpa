@@ -26,9 +26,7 @@ public class HomeController {
 
     // 로그인
     @GetMapping("/login")
-    public String login(@RequestParam(value = "error", required = false) String error,
-                        @RequestParam(value = "logout", required = false) String logout,
-                        Model model) {
+    public String login(@RequestParam(value = "error", required = false) String error, @RequestParam(value = "logout", required = false) String logout, Model model) {
         if (error != null) {
             model.addAttribute("errorMessage", "이메일 또는 비밀번호가 올바르지 않습니다.");
         }
