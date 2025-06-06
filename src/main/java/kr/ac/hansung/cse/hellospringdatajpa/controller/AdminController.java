@@ -29,6 +29,7 @@ public class AdminController {
 
         model.addAttribute("totalUsers", totalUsers);
         model.addAttribute("totalProducts", totalProducts);
+        model.addAttribute("users", userService.findAllUsers());
 
         return "admin/dashboard";
     }
